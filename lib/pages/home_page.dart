@@ -53,7 +53,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const DecksPage()),
+                  MaterialPageRoute(builder: (_) => DecksPage()),
                 );
               },
               child: Text("Decks"),
