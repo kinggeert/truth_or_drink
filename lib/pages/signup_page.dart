@@ -33,9 +33,10 @@ class _SignupPageState extends State<SignupPage> {
             content: Text('Signup successful! Please verify your email.'),
           ),
         );
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (_) => HomePage()),
+          (Route<dynamic> route) => false,
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

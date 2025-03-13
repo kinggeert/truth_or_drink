@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:truth_or_drink/pages/decks_page.dart';
 import 'package:truth_or_drink/pages/join_page.dart';
 import 'package:truth_or_drink/pages/make_page.dart';
+import 'package:truth_or_drink/pages/profile_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -9,7 +10,20 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("MEXICANO")),
+      appBar: AppBar(
+        title: Text("MEXICANO"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ProfilePage()),
+              );
+            },
+            icon: const Icon(Icons.account_circle),
+          ),
+        ],
+      ),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
