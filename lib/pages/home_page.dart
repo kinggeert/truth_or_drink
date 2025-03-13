@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:truth_or_drink/pages/decks_page.dart';
 import 'package:truth_or_drink/pages/join_page.dart';
+import 'package:truth_or_drink/pages/make_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -26,9 +28,21 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                print("Button 2 Pressed");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const MakePage()),
+                );
               },
               child: Text("Make a game"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const DecksPage()),
+                );
+              },
+              child: Text("Decks"),
             ),
           ],
         ),
