@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class GamePage extends StatefulWidget {
@@ -21,11 +22,38 @@ class _GamePageState extends State<GamePage> {
   List<int> usedCardIds = [];
   RealtimeChannel? _channel;
 
+  // Banner ad variables
+  BannerAd? _bannerAd;
+  bool _isAdLoaded = false;
+
   @override
   void initState() {
     super.initState();
     _initializeGameState();
     _subscribeToGameUpdates();
+    _loadBannerAd();
+  }
+
+  // Load the banner ad using Google Mobile Ads
+  void _loadBannerAd() {
+    _bannerAd = BannerAd(
+      adUnitId:
+          'ca-app-pub-3940256099942544/6300978111', // Replace with your actual ad unit ID
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _isAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+          print('BannerAd failed to load: ${error.message}');
+        },
+      ),
+    );
+    _bannerAd!.load();
   }
 
   Future<void> _initializeGameState() async {
@@ -218,12 +246,26 @@ class _GamePageState extends State<GamePage> {
     );
   }
 
+  // When not your turn, show waiting text plus the banner ad.
   Widget _waitWidget() {
-    return const Center(child: Text("Not your turn. Waiting for others..."));
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("Not your turn. Waiting for others..."),
+        const SizedBox(height: 20),
+        if (_isAdLoaded && _bannerAd != null)
+          Container(
+            width: _bannerAd!.size.width.toDouble(),
+            height: _bannerAd!.size.height.toDouble(),
+            child: AdWidget(ad: _bannerAd!),
+          ),
+      ],
+    );
   }
 
   @override
   void dispose() {
+    _bannerAd?.dispose();
     if (_channel != null) {
       Supabase.instance.client.removeChannel(_channel!);
     }

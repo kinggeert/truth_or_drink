@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:truth_or_drink/pages/home_page.dart';
 import 'package:truth_or_drink/pages/login_page.dart';
@@ -10,6 +13,8 @@ Future<void> main() async {
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsamNzcHNxenV4ZXdmeGRzb2JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE4NjU4MjksImV4cCI6MjA1NzQ0MTgyOX0.Aw8F4B5ST5Q83AkvyF_wiT8qGt8kdlfhoLP_85ONQb4',
   );
+  WidgetsFlutterBinding.ensureInitialized();
+  unawaited(MobileAds.instance.initialize());
 
   MaterialApp.router(routerConfig: router);
 
