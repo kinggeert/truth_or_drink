@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -15,8 +16,6 @@ Future<void> main() async {
   );
   WidgetsFlutterBinding.ensureInitialized();
   unawaited(MobileAds.instance.initialize());
-
-  MaterialApp.router(routerConfig: router);
 
   runApp(const MyApp());
 }
@@ -42,19 +41,31 @@ final router = GoRouter(
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home:
-          Supabase.instance.client.auth.currentSession != null
-              ? HomePage()
-              : LoginPage(),
+    return DynamicColorBuilder(
+      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+        ColorScheme lightScheme =
+            lightDynamic ?? ColorScheme.fromSeed(seedColor: Colors.deepPurple);
+        ColorScheme darkScheme =
+            darkDynamic ??
+            ColorScheme.fromSeed(
+              seedColor: Colors.deepPurple,
+              brightness: Brightness.dark,
+            );
+
+        return MaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(colorScheme: lightScheme, useMaterial3: true),
+          darkTheme: ThemeData(colorScheme: darkScheme, useMaterial3: true),
+          themeMode: ThemeMode.system,
+          home:
+              Supabase.instance.client.auth.currentSession != null
+                  ? HomePage()
+                  : LoginPage(),
+        );
+      },
     );
   }
 }
