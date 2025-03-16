@@ -2,51 +2,114 @@ import 'package:flutter/material.dart';
 
 import '../services/supabase.dart'; // Assuming you have this file for database operations
 
-class CardsPage extends StatelessWidget {
+class CardsPage extends StatefulWidget {
   final int deckId;
 
   CardsPage({required this.deckId});
 
-  Future<void> _deleteDeck(BuildContext context) async {
-    // Show confirmation dialog
-    final shouldDelete = await showDialog<bool>(
+  @override
+  _CardsPageState createState() => _CardsPageState();
+}
+
+class _CardsPageState extends State<CardsPage> {
+  late TextEditingController _deckNameController;
+  late Future<Map<String, dynamic>> _deckFuture;
+  late Future<List<Map<String, dynamic>>> _cardsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _deckNameController = TextEditingController();
+    _deckFuture = fetchDeck(widget.deckId);
+    _cardsFuture = fetchCards(widget.deckId);
+  }
+
+  // Function to update the deck name
+  Future<void> _updateDeckName() async {
+    final newName = _deckNameController.text;
+    final success = await updateDeckName(widget.deckId, newName);
+
+    if (success) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Deck name updated successfully')));
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to update deck name')));
+    }
+  }
+
+  // Function to delete a specific card
+  Future<void> _deleteCard(int cardId) async {
+    final success = await deleteCard(cardId);
+    if (success) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Card deleted successfully')));
+      setState(() {
+        _cardsFuture = fetchCards(widget.deckId); // Refresh cards
+      });
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to delete card')));
+    }
+  }
+
+  // Function to add a new card
+  Future<void> _addCard() async {
+    final newCardContent = await showDialog<String>(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            title: Text('Delete Deck'),
-            content: Text(
-              'Are you sure you want to delete this deck? This action cannot be undone.',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: Text('Delete'),
-              ),
-            ],
+      builder: (context) {
+        TextEditingController _cardController = TextEditingController();
+        return AlertDialog(
+          title: Text('Enter card content'),
+          content: TextField(
+            controller: _cardController,
+            autofocus: true,
+            decoration: InputDecoration(hintText: 'Card Content'),
           ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Only close the dialog if the content is not empty
+                if (_cardController.text.isNotEmpty) {
+                  Navigator.pop(context, _cardController.text);
+                }
+              },
+              child: Text('Add'),
+            ),
+          ],
+        );
+      },
     );
 
-    if (shouldDelete == true) {
-      // Call your method to delete the deck from Supabase (or any service you're using)
-      final success = await deleteDeck(deckId);
-
+    if (newCardContent != null && newCardContent.isNotEmpty) {
+      final success = await addCardToDeck(widget.deckId, newCardContent);
       if (success) {
-        // If delete is successful, show a message and pop the page
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Deck deleted successfully')));
-        Navigator.pop(context); // Pop the current page
+        ).showSnackBar(SnackBar(content: Text('Card added successfully')));
+        setState(() {
+          _cardsFuture = fetchCards(widget.deckId); // Refresh cards
+        });
       } else {
-        // Handle failure
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Failed to delete deck')));
+        ).showSnackBar(SnackBar(content: Text('Failed to add card')));
       }
     }
+  }
+
+  @override
+  void dispose() {
+    _deckNameController.dispose();
+    super.dispose();
   }
 
   @override
@@ -54,43 +117,84 @@ class CardsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: FutureBuilder<Map<String, dynamic>>(
-          future: fetchDeck(deckId),
+          future: _deckFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Text('Loading...');
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData) {
-              return Text('Cards in ${snapshot.data!['name']}');
+              return Text('Edit ${snapshot.data!['name']}');
             } else {
               return Text('No data found');
             }
           },
         ),
       ),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: fetchCards(deckId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          }
-          if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          }
-
-          final cards = snapshot.data ?? [];
-          return ListView.builder(
-            itemCount: cards.length,
-            itemBuilder: (context, index) {
-              final card = cards[index];
-              return ListTile(title: Text(card['content']));
+      body: Column(
+        children: [
+          FutureBuilder<Map<String, dynamic>>(
+            future: _deckFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else if (snapshot.hasData) {
+                final deck = snapshot.data!;
+                _deckNameController.text = deck['name'];
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextField(
+                    controller: _deckNameController,
+                    decoration: InputDecoration(labelText: 'Deck Name'),
+                    onSubmitted: (_) => _updateDeckName(),
+                  ),
+                );
+              } else {
+                return SizedBox();
+              }
             },
-          );
-        },
+          ),
+          FutureBuilder<List<Map<String, dynamic>>>(
+            future: _cardsFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                final cards = snapshot.data ?? [];
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: cards.length,
+                    itemBuilder: (context, index) {
+                      final card = cards[index];
+                      return ListTile(
+                        title: Text(card['content']),
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () => _deleteCard(card['id']),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
+            },
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _deleteDeck(context), // Call the delete method
-        child: const Icon(Icons.delete),
+        onPressed: _addCard,
+        child: Icon(Icons.add),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ElevatedButton(
+          onPressed: _updateDeckName,
+          child: Text('Save Changes'),
+        ),
       ),
     );
   }

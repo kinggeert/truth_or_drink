@@ -49,3 +49,42 @@ Future<bool> deleteDeck(int deckId) async {
     return false;
   }
 }
+
+Future<bool> updateDeckName(int deckId, String newName) async {
+  try {
+    final response = await Supabase.instance.client
+        .from('Decks')
+        .update({'name': newName})
+        .eq('id', deckId);
+    return true;
+  } catch (e) {
+    print("Error updating deck name: $e");
+    return false;
+  }
+}
+
+Future<bool> addCardToDeck(int deckId, String content) async {
+  try {
+    final response = await Supabase.instance.client.from('Cards').insert({
+      'deck_id': deckId,
+      'content': content,
+    });
+    return true;
+  } catch (e) {
+    print("Error adding card: $e");
+    return false;
+  }
+}
+
+Future<bool> deleteCard(int cardId) async {
+  try {
+    final response = await Supabase.instance.client
+        .from('Cards')
+        .delete()
+        .eq('id', cardId);
+    return true;
+  } catch (e) {
+    print("Error deleting card: $e");
+    return false;
+  }
+}
