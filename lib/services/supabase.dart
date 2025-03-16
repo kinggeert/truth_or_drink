@@ -35,3 +35,17 @@ String? getCurrentUserId() {
   print("Authenticated User ID: ${user.id}");
   return user.id;
 }
+
+Future<bool> deleteDeck(int deckId) async {
+  try {
+    final response = await Supabase.instance.client
+        .from('Decks') // Replace with your table name
+        .delete()
+        .eq('id', deckId);
+
+    return true; // Return true if no error
+  } catch (e) {
+    print("Error deleting deck: $e");
+    return false;
+  }
+}
