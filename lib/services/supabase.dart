@@ -25,3 +25,13 @@ Future<List<Map<String, dynamic>>> fetchDecks(String userId) async {
       .eq('user_id', userId);
   return List<Map<String, dynamic>>.from(response);
 }
+
+String? getCurrentUserId() {
+  final user = Supabase.instance.client.auth.currentUser;
+  if (user == null) {
+    print("User not authenticated");
+    return null;
+  }
+  print("Authenticated User ID: ${user.id}");
+  return user.id;
+}
