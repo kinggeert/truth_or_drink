@@ -28,7 +28,7 @@ class SharePage extends StatelessWidget {
           children: [
             // Show the QR code representing the gameId
             QrImageView(
-              data: gameId.toString(),
+              data: "http://truthordrink.bruls/game/$gameId",
               version: QrVersions.auto,
               size: 200.0,
             ),

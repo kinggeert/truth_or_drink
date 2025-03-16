@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:truth_or_drink/pages/home_page.dart';
 import 'package:truth_or_drink/pages/login_page.dart';
@@ -10,8 +11,28 @@ Future<void> main() async {
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsamNzcHNxenV4ZXdmeGRzb2JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE4NjU4MjksImV4cCI6MjA1NzQ0MTgyOX0.Aw8F4B5ST5Q83AkvyF_wiT8qGt8kdlfhoLP_85ONQb4',
   );
 
+  MaterialApp.router(routerConfig: router);
+
   runApp(const MyApp());
 }
+
+final router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder:
+          (_, __) => Scaffold(appBar: AppBar(title: const Text('Home Screen'))),
+      routes: [
+        GoRoute(
+          path: 'game',
+          builder:
+              (_, __) =>
+                  Scaffold(appBar: AppBar(title: const Text('Details Screen'))),
+        ),
+      ],
+    ),
+  ],
+);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
