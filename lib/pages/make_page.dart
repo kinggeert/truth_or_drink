@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:truth_or_drink/pages/share_page.dart';
 
+import '../services/deck_history_db.dart';
 import '../services/supabase.dart'; // Assuming you have a GamePage to start the game
 
 class MakePage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _MakePageState extends State<MakePage> {
     ); // Pass userId as needed
   }
 
-  Future<void> _makeGame(int deckId) async {
+  Future<void> _makeGame(int deckId, String deckName) async {
     final userId = supabase.auth.currentUser?.id;
 
     if (userId == null) {
@@ -34,9 +35,12 @@ class _MakePageState extends State<MakePage> {
     }
 
     try {
-      // Step 1: Insert the new deck into the "Decks" table
+      // Save deck usage in SQLite
+      await DeckHistoryDB.instance.addOrUpdateDeck(deckId, deckName);
+
+      // Insert the new deck into the "Games" table
       final gameResponse =
-          await Supabase.instance.client
+          await supabase
               .from('Games')
               .insert({'deck_id': deckId, 'host_id': userId})
               .select('id')
@@ -78,15 +82,38 @@ class _MakePageState extends State<MakePage> {
             return const Center(child: Text('No decks available.'));
           } else {
             final decks = snapshot.data!;
-            return ListView.builder(
-              itemCount: decks.length,
-              itemBuilder: (context, index) {
-                final deck = decks[index];
-                return ListTile(
-                  title: Text(deck['name'] ?? 'Unnamed Deck'),
-                  onTap: () {
-                    // When the user taps a deck, navigate to the game page
-                    _makeGame(deck['id']);
+
+            return FutureBuilder<List<int>>(
+              future: DeckHistoryDB.instance.getDeckHistory(),
+              builder: (context, historySnapshot) {
+                if (historySnapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                final history = historySnapshot.data ?? [];
+
+                // Sort decks based on history order
+                decks.sort((a, b) {
+                  final indexA = history.indexOf(a['id']);
+                  final indexB = history.indexOf(b['id']);
+                  if (indexA == -1) return 1; // Unused decks go to the end
+                  if (indexB == -1) return -1;
+                  return indexA.compareTo(indexB);
+                });
+
+                return ListView.builder(
+                  itemCount: decks.length,
+                  itemBuilder: (context, index) {
+                    final deck = decks[index];
+                    final lastUsed = history.contains(deck['id']);
+                    final subtitle = lastUsed ? 'Recently used' : 'Never used';
+
+                    return ListTile(
+                      title: Text(deck['name'] ?? 'Unnamed Deck'),
+                      subtitle: Text(subtitle),
+                      onTap: () => _makeGame(deck['id'], deck['name']),
+                    );
                   },
                 );
               },
