@@ -170,11 +170,13 @@ class _CardsPageState extends State<CardsPage> {
                     itemCount: cards.length,
                     itemBuilder: (context, index) {
                       final card = cards[index];
-                      return ListTile(
-                        title: Text(card['content']),
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () => _deleteCard(card['id']),
+                      return Card(
+                        child: ListTile(
+                          title: Text(card['content']),
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () => _deleteCard(card['id']),
+                          ),
                         ),
                       );
                     },

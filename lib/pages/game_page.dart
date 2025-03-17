@@ -239,27 +239,43 @@ class _GamePageState extends State<GamePage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("Your Card: ${currentCard ?? 'Waiting...'}"),
-        const SizedBox(height: 20),
-        ElevatedButton(onPressed: _endTurn, child: const Text("Done")),
+        Material(
+          elevation: 10.0, // This adds the elevation to create the shadow
+          borderRadius: BorderRadius.circular(12.0), // Rounded corners
+          shadowColor: Colors.black, // Shadow color
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: Text("It's your turn to ask a question!"),
+                subtitle: Text(currentCard ?? 'Waiting...'),
+              ),
+
+              ElevatedButton(onPressed: _endTurn, child: const Text("Done")),
+            ],
+          ),
+        ),
       ],
     );
   }
 
   // When not your turn, show waiting text plus the banner ad.
   Widget _waitWidget() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text("Not your turn. Waiting for others..."),
-        const SizedBox(height: 20),
-        if (_isAdLoaded && _bannerAd != null)
-          Container(
-            width: _bannerAd!.size.width.toDouble(),
-            height: _bannerAd!.size.height.toDouble(),
-            child: AdWidget(ad: _bannerAd!),
-          ),
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text("Not your turn. Waiting for others..."),
+          const SizedBox(height: 20),
+          if (_isAdLoaded && _bannerAd != null)
+            Container(
+              width: _bannerAd!.size.width.toDouble(),
+              height: _bannerAd!.size.height.toDouble(),
+              child: AdWidget(ad: _bannerAd!),
+            ),
+        ],
+      ),
     );
   }
 

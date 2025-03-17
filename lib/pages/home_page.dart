@@ -11,52 +11,104 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("MEXICANO"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const ProfilePage()),
-              );
-            },
-            icon: const Icon(Icons.account_circle),
-          ),
-        ],
+        title: Container(), // Remove the title from the app bar
+        actions: const [], // Remove the profile button from the app bar
       ),
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment:
+              MainAxisAlignment.center, // Center content vertically
+          crossAxisAlignment:
+              CrossAxisAlignment.center, // Center content horizontally
           children: [
-            Text("Ik wil een mexicano"),
-            const SizedBox(height: 20),
-            ElevatedButton(
+            // Larger title text in the center
+            Text(
+              "Truth Or Drink",
+              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 40), // Space between title and buttons
+
+            ElevatedButton.icon(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const JoinPage()),
                 );
               },
-              child: Text("Join game"),
+              icon: const Icon(Icons.group_add), // Icon for joining
+              label: const Text("Join game"),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 40,
+                ),
+                elevation: 5,
+                textStyle: const TextStyle(fontSize: 18),
+              ),
             ),
-            const SizedBox(height: 10),
-            ElevatedButton(
+            const SizedBox(height: 20),
+
+            ElevatedButton.icon(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const MakePage()),
                 );
               },
-              child: Text("Make a game"),
+              icon: const Icon(Icons.create), // Icon for making a game
+              label: const Text("Make a game"),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 40,
+                ),
+                elevation: 5,
+                textStyle: const TextStyle(fontSize: 18),
+              ),
             ),
-            ElevatedButton(
+            const SizedBox(height: 20),
+
+            ElevatedButton.icon(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => DecksPage()),
                 );
               },
-              child: Text("Decks"),
+              icon: const Icon(Icons.deck), // Icon for viewing decks
+              label: const Text("Decks"),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 40,
+                ),
+                elevation: 5,
+                textStyle: const TextStyle(fontSize: 18),
+              ),
+            ),
+            const SizedBox(height: 40),
+
+            // Move profile button to a more logical place, below the buttons
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ProfilePage()),
+                );
+              },
+              icon: const Icon(Icons.account_circle), // Icon for profile
+              label: const Text("Profile"),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 40,
+                ),
+                elevation: 5,
+                textStyle: const TextStyle(fontSize: 18),
+              ),
             ),
           ],
         ),

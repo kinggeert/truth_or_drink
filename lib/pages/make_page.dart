@@ -109,10 +109,12 @@ class _MakePageState extends State<MakePage> {
                     final lastUsed = history.contains(deck['id']);
                     final subtitle = lastUsed ? 'Recently used' : 'Never used';
 
-                    return ListTile(
-                      title: Text(deck['name'] ?? 'Unnamed Deck'),
-                      subtitle: Text(subtitle),
-                      onTap: () => _makeGame(deck['id'], deck['name']),
+                    return Card(
+                      child: ListTile(
+                        title: Text(deck['name'] ?? 'Unnamed Deck'),
+                        subtitle: Text(subtitle),
+                        onTap: () => _makeGame(deck['id'], deck['name']),
+                      ),
                     );
                   },
                 );

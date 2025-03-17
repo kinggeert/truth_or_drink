@@ -27,11 +27,17 @@ class SharePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Show the QR code representing the gameId
-            QrImageView(
-              data: "http://truthordrink.bruls/game/$gameId",
-              version: QrVersions.auto,
-              size: 200.0,
+            Material(
+              elevation: 10.0, // This adds the elevation to create the shadow
+              borderRadius: BorderRadius.circular(12.0), // Rounded corners
+              shadowColor: Colors.black, // Shadow color
+              child: QrImageView(
+                data: "http://truthordrink.bruls/game/$gameId",
+                version: QrVersions.auto,
+                size: 200.0,
+              ),
             ),
+
             const SizedBox(height: 20),
             Text(
               'Share this code with your friends to join the game!',

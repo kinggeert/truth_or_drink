@@ -27,15 +27,17 @@ class DecksPage extends StatelessWidget {
             itemCount: decks.length,
             itemBuilder: (context, index) {
               final deck = decks[index];
-              return ListTile(
-                title: Text(deck['name']),
-                onTap:
-                    () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => CardsPage(deckId: deck['id']),
+              return Card(
+                child: ListTile(
+                  title: Text(deck['name']),
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => CardsPage(deckId: deck['id']),
+                        ),
                       ),
-                    ),
+                ),
               );
             },
           );
