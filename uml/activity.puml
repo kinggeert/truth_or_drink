@@ -1,0 +1,17 @@
+@startuml
+start
+:Update vanaf database;
+if (Host?) then (ja)
+    if (current_user_id == NULL) then (ja)
+        :volgende ronde;
+    else (nee)
+    endif
+else (nee)
+endif
+if (current_user_id == user_id) then (ja)
+    :Display jouw beurt;
+else (nee)
+    :Display niet jouw beurt;
+endif
+end
+@enduml

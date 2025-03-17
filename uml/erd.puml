@@ -1,0 +1,16 @@
+@startuml
+
+' configuration
+hide circle
+skinparam linetype ortho
+
+' comment
+entity "deck_history" as deck_history {
+ id: integer
+ --
+ deck_id: integer
+ name: text
+ timestamp: integer
+}
+
+@enduml

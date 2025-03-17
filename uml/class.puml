@@ -1,0 +1,44 @@
+@startuml
+hide circle
+hide empty members
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+title Class-diagram Truth Or Drink
+
+
+class User {
+    +uuid Id
+    +string PasswordHash
+    +string Email
+}
+
+class Deck {
+    +int Id
+    +string Name
+    +User User
+}
+
+class Card {
+    +int Id
+    +string Content
+    +Deck Deck
+    +User User
+    }
+
+class Game {
+    +int Identifier
+    +User Owner
+    +Deck Deck
+    +List<User> Participants
+    +User CurrentUser
+    +Card CurrentCard
+}
+
+Card "0:n" -- "1" User
+Deck "0:n" -- "1" User
+Game "0:n" -- "1:n" User
+Game "0:n" -- "1" Card
+Deck "1" -- "0:n" Card
+Game "1" -- "0:n" Deck
+
+@enduml

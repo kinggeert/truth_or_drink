@@ -1,0 +1,21 @@
+@startuml
+skinparam classAttributeIconSize 0
+left to right direction
+
+actor "Gebruiker" as gebruiker
+
+rectangle "Truth Or Drink" {
+  usecase "1. Decks inzien" as UC01
+  usecase "2. Deck toevoegen" as UC02
+  usecase "3. Deck aanpassen" as UC03
+  usecase "4. Spel starten" as UC04
+  usecase "5. Spel joinen" as UC05
+}
+
+gebruiker -- UC01
+UC01 <-- UC02
+UC01 <-- UC03
+gebruiker -- UC04
+gebruiker -- UC05
+
+@enduml
