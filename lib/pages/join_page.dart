@@ -57,10 +57,8 @@ class JoinPage extends StatelessWidget {
               context: context,
               builder:
                   (context) => AlertDialog(
-                    title: const Text("Code invalid."),
-                    content: Text(
-                      "The QR-code you scanned does not contain a valid game code.",
-                    ),
+                    title: const Text("Foute code."),
+                    content: Text("De QR-code bevat geen valide spelcode."),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context, 'OK'),

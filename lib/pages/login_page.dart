@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
       if (response.user != null) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Login successful!')));
+        ).showSnackBar(SnackBar(content: Text('Succesvol ingelogd!')));
 
         Navigator.pushAndRemoveUntil(
           context,
@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed: ${response.toString()}')),
+          SnackBar(content: Text('Login gefaald: ${response.toString()}')),
         );
       }
     } catch (e) {
@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("MEXICANO")),
+      appBar: AppBar(title: Text("Inloggen")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -70,13 +70,13 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 16),
             TextField(
               controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(labelText: 'Wachtwoord'),
               obscureText: true,
             ),
             SizedBox(height: 32),
             _isLoading
                 ? CircularProgressIndicator()
-                : ElevatedButton(onPressed: _login, child: Text('Login')),
+                : ElevatedButton(onPressed: _login, child: Text('Inloggen')),
             SizedBox(height: 16),
             TextButton(
               onPressed: () {
@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                   MaterialPageRoute(builder: (context) => SignupPage()),
                 );
               },
-              child: Text('Don\'t have an account? Sign Up'),
+              child: Text('Nog geen account? Meld je aan'),
             ),
           ],
         ),

@@ -52,9 +52,6 @@ class _MakePageState extends State<MakePage> {
 
       final gameId = gameResponse['id'] as int;
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Game made successfully!')));
       Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => SharePage(gameId: gameId)),
@@ -70,7 +67,7 @@ class _MakePageState extends State<MakePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Make")),
+      appBar: AppBar(title: const Text("Host")),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _decksFuture,
         builder: (context, snapshot) {
@@ -79,7 +76,7 @@ class _MakePageState extends State<MakePage> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No decks available.'));
+            return const Center(child: Text('Geen decks gevonden.'));
           } else {
             final decks = snapshot.data!;
 
@@ -107,11 +104,12 @@ class _MakePageState extends State<MakePage> {
                   itemBuilder: (context, index) {
                     final deck = decks[index];
                     final lastUsed = history.contains(deck['id']);
-                    final subtitle = lastUsed ? 'Recently used' : 'Never used';
+                    final subtitle =
+                        lastUsed ? 'Recent gebruikt' : 'Nooit gebruikt';
 
                     return Card(
                       child: ListTile(
-                        title: Text(deck['name'] ?? 'Unnamed Deck'),
+                        title: Text(deck['name'] ?? 'Naamloze deck'),
                         subtitle: Text(subtitle),
                         onTap: () => _makeGame(deck['id'], deck['name']),
                       ),

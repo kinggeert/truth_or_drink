@@ -21,7 +21,7 @@ class SharePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Share Game")),
+      appBar: AppBar(title: const Text("Deel spel")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -40,7 +40,7 @@ class SharePage extends StatelessWidget {
 
             const SizedBox(height: 20),
             Text(
-              'Share this code with your friends to join the game!',
+              'Deel deze QR-code met je vrienden om ze toe te voegen aan het spel!',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16),
             ),
@@ -55,7 +55,7 @@ class SharePage extends StatelessWidget {
                   MaterialPageRoute(builder: (_) => GamePage(gameId: gameId)),
                 );
               },
-              child: const Text("Start Game"),
+              child: const Text("Start spel"),
             ),
           ],
         ),

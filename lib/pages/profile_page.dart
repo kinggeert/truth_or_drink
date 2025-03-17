@@ -8,7 +8,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Signup")),
+      appBar: AppBar(title: Text("Profiel")),
       body: Center(
         child: Column(
           children: [
@@ -17,9 +17,9 @@ class ProfilePage extends StatelessWidget {
                 try {
                   final supabase = Supabase.instance.client;
                   final response = supabase.auth.signOut();
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text('Logout successful!')));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Succesvol uitgelogd!')),
+                  );
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (_) => LoginPage()),
@@ -32,7 +32,7 @@ class ProfilePage extends StatelessWidget {
                   ).showSnackBar(SnackBar(content: Text('Error: $e')));
                 }
               },
-              child: Text("Logout"),
+              child: Text("Uitloggen"),
             ),
           ],
         ),

@@ -11,7 +11,7 @@ class DecksPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Your Decks')),
+      appBar: AppBar(title: Text('Jouw decks')),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: fetchDecks(supabase.auth.currentUser!.id),
         builder: (context, snapshot) {

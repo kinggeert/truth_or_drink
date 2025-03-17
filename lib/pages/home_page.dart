@@ -39,7 +39,7 @@ class HomePage extends StatelessWidget {
                 );
               },
               icon: const Icon(Icons.group_add), // Icon for joining
-              label: const Text("Join game"),
+              label: const Text("Join spel"),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
                   vertical: 20,
@@ -59,7 +59,7 @@ class HomePage extends StatelessWidget {
                 );
               },
               icon: const Icon(Icons.create), // Icon for making a game
-              label: const Text("Make a game"),
+              label: const Text("Host een spel"),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
                   vertical: 20,
@@ -78,7 +78,7 @@ class HomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (_) => DecksPage()),
                 );
               },
-              icon: const Icon(Icons.deck), // Icon for viewing decks
+              icon: const Icon(Icons.style), // Icon for viewing decks
               label: const Text("Decks"),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
@@ -100,7 +100,7 @@ class HomePage extends StatelessWidget {
                 );
               },
               icon: const Icon(Icons.account_circle), // Icon for profile
-              label: const Text("Profile"),
+              label: const Text("Profiel"),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
                   vertical: 20,

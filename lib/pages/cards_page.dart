@@ -64,16 +64,16 @@ class _CardsPageState extends State<CardsPage> {
       builder: (context) {
         TextEditingController _cardController = TextEditingController();
         return AlertDialog(
-          title: Text('Enter card content'),
+          title: Text('Vul inhoud in'),
           content: TextField(
             controller: _cardController,
             autofocus: true,
-            decoration: InputDecoration(hintText: 'Card Content'),
+            decoration: InputDecoration(hintText: 'Kaart inhoud'),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Cancel'),
+              child: Text('Anuleren'),
             ),
             TextButton(
               onPressed: () {
@@ -82,7 +82,7 @@ class _CardsPageState extends State<CardsPage> {
                   Navigator.pop(context, _cardController.text);
                 }
               },
-              child: Text('Add'),
+              child: Text('Toevoegen'),
             ),
           ],
         );
@@ -94,14 +94,14 @@ class _CardsPageState extends State<CardsPage> {
       if (success) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Card added successfully')));
+        ).showSnackBar(SnackBar(content: Text('Kaart succesvol toegevoegd')));
         setState(() {
           _cardsFuture = fetchCards(widget.deckId); // Refresh cards
         });
       } else {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Failed to add card')));
+        ).showSnackBar(SnackBar(content: Text('Kaart toevoegen gefaald')));
       }
     }
   }
@@ -126,7 +126,7 @@ class _CardsPageState extends State<CardsPage> {
             } else if (snapshot.hasData) {
               return Text('Edit ${snapshot.data!['name']}');
             } else {
-              return Text('No data found');
+              return Text('Geen data gevonden');
             }
           },
         ),
@@ -147,7 +147,7 @@ class _CardsPageState extends State<CardsPage> {
                   padding: const EdgeInsets.all(16.0),
                   child: TextField(
                     controller: _deckNameController,
-                    decoration: InputDecoration(labelText: 'Deck Name'),
+                    decoration: InputDecoration(labelText: 'Deck naam'),
                     onSubmitted: (_) => _updateDeckName(),
                   ),
                 );
@@ -195,7 +195,7 @@ class _CardsPageState extends State<CardsPage> {
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
           onPressed: _updateDeckName,
-          child: Text('Save Changes'),
+          child: Text('Opslaan'),
         ),
       ),
     );

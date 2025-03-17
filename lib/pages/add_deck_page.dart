@@ -42,7 +42,7 @@ class _AddDeckPageState extends State<AddDeckPage> {
 
     if (deckTitle.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Deck title cannot be empty')),
+        const SnackBar(content: Text('Deck titel kan niet leeg zijn')),
       );
       return;
     }
@@ -68,7 +68,7 @@ class _AddDeckPageState extends State<AddDeckPage> {
               .single();
 
       if (deckResponse.isEmpty) {
-        throw Exception("Saving deck failed: empty response.");
+        throw Exception("Deck opslaan gefaald: empty response.");
       }
 
       final deckId = deckResponse['id'] as int;
@@ -94,7 +94,7 @@ class _AddDeckPageState extends State<AddDeckPage> {
 
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Deck saved successfully!')));
+      ).showSnackBar(const SnackBar(content: Text('Deck opgeslagen!')));
       Navigator.pop(context); // Go back to the previous screen after saving
     } catch (e) {
       print(e);
@@ -112,7 +112,7 @@ class _AddDeckPageState extends State<AddDeckPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Deck'),
+        title: const Text('Deck aanmaken'),
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
@@ -128,7 +128,7 @@ class _AddDeckPageState extends State<AddDeckPage> {
             TextField(
               controller: _titleController,
               decoration: const InputDecoration(
-                labelText: 'Deck Title',
+                labelText: 'Deck Titel',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -145,7 +145,7 @@ class _AddDeckPageState extends State<AddDeckPage> {
                           child: TextField(
                             controller: _cardControllers[index],
                             decoration: InputDecoration(
-                              labelText: 'Card ${index + 1}',
+                              labelText: 'Kaart ${index + 1}',
                               border: const OutlineInputBorder(),
                             ),
                           ),
@@ -167,7 +167,7 @@ class _AddDeckPageState extends State<AddDeckPage> {
                 ElevatedButton.icon(
                   onPressed: _addCard,
                   icon: const Icon(Icons.add),
-                  label: const Text('Add Card'),
+                  label: const Text('Kaart toevoegen'),
                 ),
                 ElevatedButton.icon(
                   onPressed: _isSaving ? null : _saveDeck,
@@ -180,7 +180,7 @@ class _AddDeckPageState extends State<AddDeckPage> {
                             ),
                           )
                           : const Icon(Icons.save),
-                  label: const Text('Save Deck'),
+                  label: const Text('Opslaan'),
                 ),
               ],
             ),

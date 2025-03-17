@@ -29,9 +29,7 @@ class _SignupPageState extends State<SignupPage> {
 
       if (response.user != null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Signup successful! Please verify your email.'),
-          ),
+          SnackBar(content: Text('Succesvol aangemeld! verifiëer uw email')),
         );
         Navigator.pushAndRemoveUntil(
           context,
@@ -40,7 +38,7 @@ class _SignupPageState extends State<SignupPage> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Signup failed: ${response.toString()}')),
+          SnackBar(content: Text('Aanmelden gefaald: ${response.toString()}')),
         );
       }
     } catch (e) {
@@ -57,7 +55,7 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Signup")),
+      appBar: AppBar(title: Text("Aanmelden")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -70,13 +68,13 @@ class _SignupPageState extends State<SignupPage> {
             SizedBox(height: 16),
             TextField(
               controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(labelText: 'Wachtwoord'),
               obscureText: true,
             ),
             SizedBox(height: 32),
             _isLoading
                 ? CircularProgressIndicator()
-                : ElevatedButton(onPressed: _signup, child: Text('Sign Up')),
+                : ElevatedButton(onPressed: _signup, child: Text('Aanmelden')),
           ],
         ),
       ),

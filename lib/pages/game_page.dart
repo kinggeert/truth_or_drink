@@ -101,9 +101,7 @@ class _GamePageState extends State<GamePage> {
         builder:
             (context) => AlertDialog(
               title: const Text("Code invalid."),
-              content: const Text(
-                "The QR-code you scanned does not contain a valid game code.",
-              ),
+              content: const Text("De QR-code bevat geen valide spelcode."),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -196,7 +194,7 @@ class _GamePageState extends State<GamePage> {
         .eq("deck_id", deckId!);
 
     if (cardResponse == null || cardResponse.isEmpty) {
-      print('Error: No cards found or failed to fetch cards.');
+      print('Error: Geen kaarten gevonden.');
       return;
     }
 
@@ -207,7 +205,7 @@ class _GamePageState extends State<GamePage> {
             .toList();
 
     if (unusedCards.isEmpty) {
-      print('No more unused cards available.');
+      print('Geen kaarten meer beschikbaar.');
       return;
     }
 
@@ -247,11 +245,11 @@ class _GamePageState extends State<GamePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: Text("It's your turn to ask a question!"),
-                subtitle: Text(currentCard ?? 'Waiting...'),
+                title: Text("Het is jouw beurt om een vraag te stellen!"),
+                subtitle: Text(currentCard ?? 'Wachten...'),
               ),
 
-              ElevatedButton(onPressed: _endTurn, child: const Text("Done")),
+              ElevatedButton(onPressed: _endTurn, child: const Text("Klaar")),
             ],
           ),
         ),
@@ -266,7 +264,7 @@ class _GamePageState extends State<GamePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text("Not your turn. Waiting for others..."),
+          const Text("Het is niet jouw beurt..."),
           const SizedBox(height: 20),
           if (_isAdLoaded && _bannerAd != null)
             Container(
@@ -291,7 +289,7 @@ class _GamePageState extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Game")),
+      appBar: AppBar(title: const Text("Spel")),
       body: isTurn ? _turnWidget() : _waitWidget(),
     );
   }
